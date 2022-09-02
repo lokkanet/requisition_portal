@@ -1,0 +1,21 @@
+<th class="text-end"><a href="{% url 'update_requisition' requisitions.id %}" class="text-primary">UPDATE</a></th>
+                    <th class="text-end"><a href="{% url 'delete_requisition' requisitions.id %}">DELETE</a></th>
+
+
+
+
+
+                       {{ form.submitted_by }}
+             {{ form.employee}}
+
+             {{ form.title|as_crispy_field }}
+             {{ form.file|as_crispy_field }}
+             <!-- {{ form.status|as_crispy_field }} -->
+
+            
+            <br>
+             <button class="btn btn-primary" type="submit">Submit</button>
+            
+                <div class="py-3 text-warning">
+                    {{form.errors}}
+                </div>

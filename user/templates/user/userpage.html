@@ -1,0 +1,117 @@
+{% extends 'user/base.html' %}
+{% block content %}
+{%load static%}
+
+
+<style>
+  table a {
+    text-decoration: none;
+    color: black;
+  }
+</style>
+
+
+<div class="" style="min-height: 1024px;">
+  <div class="container px-5">
+    <div class="d-flex justify-content-between py-3">
+      <h5 class="text-center  my-3 mx-5">Requisitions Submitted to You</h5>
+
+      <a href="{% url 'create_requisition' employee.id %}" class="btn btn-light border border-2 mb-3 mx-5">Create New
+        Requisition</a>
+    </div>
+
+    <div class="d-flex justify-content-center px-5 pb-5">
+
+      <div class="col">
+
+        <table class="table" style="font-size: 0.9rem;">
+          <thead class="bg-dark text-light">
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col" class="text-end">Submitted by</th>
+              <th scope="col" class="text-end">Date of Submission</th>
+              <th scope="col" class="text-end">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for requisitions in requisitions%}
+            {% if requisitions.submitted_by.name != employee.name %}
+            <tr>
+
+              <th class="col-6"> <a href="{% url 'requisitions' requisitions.id %}" class="">{{requisitions}}</a> </th>
+              <th class="text-end fw-lighter">{{requisitions.submitted_by.name}}</th>
+              <th class="text-end fw-lighter"> {{requisitions.date}}</th>
+              <th class="text-end fw-lighter">{{requisitions.status}}</th>
+
+
+            </tr>
+            {% endif %}
+
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="container px-5">
+    <div class="d-flex justify-content-between py-3">
+      <h5 class="text-center  my-3 mx-5">Requisitions Submitted by You</h5>
+    </div>
+
+    <div class="d-flex justify-content-center px-5 pb-5">
+
+      <div class="col">
+
+        <table class="table" style="font-size: 0.9rem;">
+          <thead class="bg-dark text-light">
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col" class="text-end">Submitted by</th>
+              <th scope="col" class="text-end">Date of Submission</th>
+              <th scope="col" class="text-end">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for requisitions in requisitions%}
+            {% if requisitions.submitted_by.name == employee.name %}
+            <tr>
+
+              <th class="col-6"> <a href="{% url 'requisitions' requisitions.id %}" class="">{{requisitions}}</a> </th>
+              <th class="text-end fw-lighter">{{requisitions.submitted_by.name}}</th>
+              <th class="text-end fw-lighter"> {{requisitions.date}}</th>
+              <th class="text-end fw-lighter">{{requisitions.status}}</th>
+
+
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "user/base.html" %}
+{% block content %}
+{%load static%}
+
+
+
+
+<div class="homebody">
+  <div class="container p-5 text-center">
+    {% if dummy == -1 %}
+    Please confirm your email address to complete the registration.
+    {% endif %}
+
+    {% if dummy == 1 %}
+    Thank you for your email confirmation. Now you can login to your account.
+    {% endif %}
+
+    {% if dummy == 0 %}
+    Activation link is invalid! Please try to register again.
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
+

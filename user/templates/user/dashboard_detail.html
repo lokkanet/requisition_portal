@@ -1,0 +1,62 @@
+{% extends 'user/base.html' %}
+{% block content %}
+{%load static%}
+
+
+<style>
+    table a {
+        text-decoration: none;
+        color: black;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+    }
+    a:hover {
+        color: white;
+    }
+    .card{
+        margin: 10px;
+    }
+</style>
+
+
+<div class="" style="min-height: 1024px;">
+    <div class="container p-5">
+        <table class="table" style="font-size: 0.9rem;">
+            <thead class="bg-dark text-light">
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col" class="text-end">Submitted by</th>
+                <th scope="col" class="text-end">Date of Submission</th>
+                <th scope="col" class="text-end">Expected Date of Delivery</th>
+                <th scope="col" class="text-end">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+  
+              {% for u in all_pending_to_user %}
+              <tr>
+  
+                <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
+                <th class="text-end fw-lighter"> {{u.date}}</th>
+                {% if u.date_of_delivery != u.date %} 
+                <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
+                {% else %}
+                <th class="text-end fw-lighter"> N/A </th>
+                {% endif %}
+                <th class="text-end fw-lighter">{{u.status}}</th>
+  
+  
+              </tr>
+  
+              {% endfor %}
+            </tbody>
+          </table>
+
+    </div>
+   
+</div>
+
+{% endblock %}

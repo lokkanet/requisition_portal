@@ -1,0 +1,62 @@
+{% extends "user/base.html" %}
+{% block content %}
+
+
+
+{%load static%}
+{% load crispy_forms_tags %}
+
+
+{{ form.media.css }}
+
+<style>
+    .asteriskField {
+        display: none;
+    }
+</style>
+
+
+<div class="homebody">
+    <div class="container p-5">
+        <h5 class="text-center mb-3">Update Requisition</h5>
+        <div class="d-flex justify-content-around">
+
+            <div class="col-4 p-5">
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+
+                    <h6>Title</h6>
+                    <p>{{requisition.title}}</p>
+
+                    <h6>Date created on</h6>
+                    <p>{{requisition.date}}</p>
+                    <h6>Submitted By</h6>
+                    <p>{{requisition.submitted_by}}</p>
+<hr>
+<br>
+                    {{form.date_of_delivery|as_crispy_field}}
+                    {{ form.status|as_crispy_field }}
+
+
+
+                    <br>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <div class="py-3 text-warning">
+                        {{form.errors}}
+                    </div>
+                </form>
+            </div>
+            <div class="col-6">
+                <h6>File</h6>
+                <a href="{{requisition.file.url}}" class="btn btn-primary">View File in a new Tab</a>
+                <embed src="{{requisition.file.url}}" type="" width="100%" height="500" class="border" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static '//code.jquery.com/jquery-2.1.4.min.js' %}"></script>
+
+{{ form.media.js }}
+{% endblock %}

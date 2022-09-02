@@ -1,0 +1,80 @@
+exit
+exit()
+from .models import all
+from .models import *
+history
+ readline.get_current_history_length()
+import readline
+readline.write_history_file('python_history.txt')
+readline.get_history_item(10)
+readline.get_history_item(1)
+from requsition.models
+ls
+from user.models import *
+r1= Requisition.objects.all()
+print(r1)
+r1= Requisition.objects.first()
+print(r1)
+r2 = r1.employee.all()
+print(r2)
+r1= Requisition.objects.last()
+print(r1)
+r2 = r1.employee.all()
+print(r2)
+r2 = r1.employee.values_list('NewUser', flat=True)
+r2 = r1.employee.values_list('email', flat=True)
+print(r2)
+r2 = r1.employee.values_list('user', flat=True)
+print(r2)
+for u in r2:
+	u1 = Users.objects.get(id=u)
+	print(u)
+for u in r2:
+	u1 = User.objects.get(id=u)
+	print(u)
+for u in r2:
+	u1 = User.objects.get(id=u)
+	print(u.email)
+	print(u.username)
+for u in r2:
+	u1 = User.objects.get(id=u)
+	print(u.username)
+u1 = User.objects.all()
+print(u1)
+
+u1 = User.objects.value_list('username', flat=True)
+u1 = User.objects.values_list('username', flat=True)
+print(u1)
+u1 = User.objects.values_list('email', flat=True)
+print(u1)
+r=Requisition.objects.last()
+print(r)
+r2 = r.employee.all()
+print(r2)
+r3 = r.employee.values_list('user', flat=True)
+print(r3)
+for some in r3:
+	x = User.objects.filter(id=some)
+	print(x)
+	print(x.email)
+for some in r3:
+	x = User.objects.filter(id=some)
+	print(x)
+for some in r3:
+	x = User.objects.filter(id=some).values_list('email')
+	print(x)
+for some in r3:
+	x = User.objects.filter(id=some).values_list('email', flat=True)
+	print(x)
+r3 = r.employee.values_list('user', flat=True)
+print(r3)
+x = User.objects.filter(id=some).values_list('email')
+print(x)
+x = User.objects.filter(id=[r3]).values_list('email')
+print(r3)
+list(r3)
+x = User.objects.filter(id=list(r3)).values_list('email')
+x = User.objects.filter(id=[list(r3)]).values_list('email')
+x = User.objects.filter(id__in=list(r3)).values_list('email')
+print(x)
+readline.write_history_file('python_history.txt')

@@ -1,0 +1,30 @@
+{% extends "user/base.html" %}
+{% block content %}
+
+{%load static%}
+{% load crispy_forms_tags %}
+<style>
+    .asteriskField {
+      display: none;
+    }
+    
+  </style>
+
+
+<div class="homebody">
+  <div class="container p-5 text-center">
+  
+      Are You Sure You Want To Delete<p class="fw-bold">{{requisition}}?</p>
+      <form action="{% url 'delete_requisition' requisition.id %}" method="POST">
+          {% csrf_token %}
+          <a href="{%url 'requisitions' requisition.id %}" class="btn btn-primary">cancel</a>
+  
+  
+          <button class="btn btn-secondary" type="submit">Confirm</button>
+          <!-- <input type="submit" name="confirm" id=""> -->
+      </form>
+  </div>
+</div>
+
+{% endblock %}
+
