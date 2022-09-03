@@ -28,6 +28,20 @@
     <div class="navbar navbar-expand-lg navbar-light sticky-top bg-opacity-25">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'loginpage' %}">BdREN REQUISITION</a>
+          {% if user.is_authenticated %}
+          <ul class="nav">
+            
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'userpage0' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark" href="{% url 'userpage' %}">All Requisitions</a>
+            </li>
+
+          </ul>
+          {% endif %}
+
+
           <ul class="nav justify-content-end">
 
             {% if user.is_authenticated %}
@@ -39,6 +53,7 @@
               {{user.username}}              
             </button>
               <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                 <li><a class="dropdown-item" href="{% url 'logoutuser' %}">Log Out</a></li>
                
               </ul>

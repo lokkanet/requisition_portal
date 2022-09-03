@@ -23,6 +23,12 @@ urlpatterns = [
     path('register/', views.registerpage, name='registerpage'),
     path('login/', views.loginpage, name='loginpage'),
     path('logout/', views.logoutuser, name='logoutuser'),
+    path('profile/', views.profile, name='profile'),
+
+
+
+
+
     path('', views.userpage, name='userpage'),
     path('dashboard/', views.userpage0, name='userpage0'),
     path('dashboard_detail/', views.userpage1, name='dashboard_detail'),
@@ -40,7 +46,7 @@ urlpatterns = [
     path('delete_requisition/<str:pk>', views.delete_requisition, name='delete_requisition'),
     path('update_requisition/<str:pk>', views.update_requisition, name='update_requisition'),
     path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.activate, name='activate'),  
-    path("select2/", include("django_select2.urls")),
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

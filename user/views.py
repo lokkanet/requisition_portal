@@ -114,6 +114,41 @@ def logoutuser(request):
     return redirect('loginpage')
 
 
+# PROFILE PAGE======================
+@login_required(login_url='loginpage')
+@allowed_users(allowed_roles=['employee'])
+def profile(request):
+    profil = request.user.newuser
+    user_profil = request.user
+   
+
+    context = {
+        'user_profil': user_profil,
+        'profil':profil,
+    }
+    return render(request, "user/profile.html", context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # USER PAGE=============================
 @login_required(login_url='loginpage')
 @allowed_users(allowed_roles=['employee'])

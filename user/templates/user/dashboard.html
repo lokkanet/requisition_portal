@@ -8,26 +8,34 @@
         text-decoration: none;
         color: black;
     }
-    a{
+
+    a {
         text-decoration: none;
         color: black;
     }
+
     a:hover {
         color: white;
     }
-    .card{
+
+    .card {
         margin: 10px;
     }
 </style>
 
 
 <div class="" style="min-height: 1024px;">
+   
+<!-- to user -->
     <div class="container p-5">
-        <div class="d-flex justify-content-center py-3" >
-            <div class="card">
-                <h6 class="text-end  my-3 mx-5">Requisitions Submitted To You</h6>
-            </div>
-            <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        <h6 class="text-center">Requisitions Submitted To You</h6>
+        
+
+        <div class="d-flex justify-content-center pt-3">
+           
+            
+            <a data-bs-toggle="collapse" href="#multicollapseExample1" role="button" aria-expanded="false"
+                aria-controls="multicollapseExample">
                 <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FF6200;">
                     <h5> Total Pending</h5>
                     <h1>{{total_pending_to_user}}</h1>
@@ -35,35 +43,20 @@
             </a>
             
 
-            <a href="">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FFB225;"><h5>Total Processing</h5><h1>{{total_processing_to_user}}</h1></div>
+
+            <a data-bs-toggle="collapse" href="#multicollapseExample2" role="button" aria-expanded="false"
+            aria-controls="multicollapseExample">
+                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FFB225;">
+                    <h5>Total Processing</h5>
+                    <h1>{{total_processing_to_user}}</h1>
+                </div>
             </a>
-            <a href="">
-                <div class="card  opacity-75 text-center px-5 py-4" style=" background-color: #009350;"><h5>Total Delivered</h5><h1>{{total_delivered_to_user}}</h1></div>
-            </a>
-
-        </div>
-
-
-    </div>
-    <div class="container px-5">
-        <div class="d-flex justify-content-center py-3" >
-            <div class="card">
-                <h6 class="text-end  my-3 mx-5">Requisitions Submitted by You</h6>
-            </div>
-            <a href="">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FF6F61;"><h5>Total Pending</h5>
-                <h1>{{total_pending_by_user}}</h1></div>
-            </a>
-
-            <a href="">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #21486f;"><h5>Total Processing</h5>
-                <h1>{{total_processing_by_user}}</h1></div>
-            </a>
-
-            <a href="">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #00AD9C ;"><h5>Total Delivered</h5>
-                <h1>{{total_delivered_by_user}}</h1></div>
+            <a data-bs-toggle="collapse" href="#multicollapseExample3" role="button" aria-expanded="false"
+            aria-controls="multicollapseExample">
+                <div class="card  opacity-75 text-center px-5 py-4" style=" background-color: #009350;">
+                    <h5>Total Delivered</h5>
+                    <h1>{{total_delivered_to_user}}</h1>
+                </div>
             </a>
 
         </div>
@@ -71,49 +64,291 @@
 
     </div>
 
-    <div class="collapse" id="collapseExample">
+<!-- Collapse section -->
+    <div class="collapse multi-collapse" id="multicollapseExample1">
         <div class="">
             <div class="container p-5">
                 <table class="table" style="font-size: 0.9rem;">
                     <thead class="bg-dark text-light">
-                      <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col" class="text-end">Submitted by</th>
-                        <th scope="col" class="text-end">Date of Submission</th>
-                        <th scope="col" class="text-end">Expected Date of Delivery</th>
-                        <th scope="col" class="text-end">Status</th>
-                      </tr>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col" class="text-end">Submitted by</th>
+                            <th scope="col" class="text-end">Date of Submission</th>
+                            <th scope="col" class="text-end">Expected Date of Delivery</th>
+                            <th scope="col" class="text-end">Status</th>
+                        </tr>
                     </thead>
                     <tbody>
-          
-                      {% for u in all_pending_to_user %}
-                      <tr>
-          
-                        <th class="col-6"> <a href="" class="">{{u}}</a> </th>
-                        <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
-                        <th class="text-end fw-lighter"> {{u.date}}</th>
-                        {% if u.date_of_delivery != u.date %} 
-                        <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
-                        {% else %}
-                        <th class="text-end fw-lighter"> N/A </th>
-                        {% endif %}
-                        <th class="text-end fw-lighter">{{u.status}}</th>
-          
-          
-                      </tr>
-          
-                      {% endfor %}
+
+                        {% for u in all_pending_to_user %}
+                        <tr>
+
+                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
+                            <th class="text-end fw-lighter"> {{u.date}}</th>
+                            {% if u.date_of_delivery != u.date %}
+                            <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
+                            {% else %}
+                            <th class="text-end fw-lighter"> N/A </th>
+                            {% endif %}
+                            <th class="text-end fw-lighter">{{u.status}}</th>
+
+
+                        </tr>
+
+                        {% endfor %}
                     </tbody>
-                  </table>
-        
+                </table>
+
             </div>
         </div>
     </div>
+
+    <div class="collapse multi-collapse" id="multicollapseExample2">
+        <div class="">
+            <div class="container p-5">
+                <table class="table" style="font-size: 0.9rem;">
+                    <thead class="bg-dark text-light">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col" class="text-end">Submitted by</th>
+                            <th scope="col" class="text-end">Date of Submission</th>
+                            <th scope="col" class="text-end">Expected Date of Delivery</th>
+                            <th scope="col" class="text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for u in all_processing_to_user %}
+                        <tr>
+
+                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
+                            <th class="text-end fw-lighter"> {{u.date}}</th>
+                            {% if u.date_of_delivery != u.date %}
+                            <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
+                            {% else %}
+                            <th class="text-end fw-lighter"> N/A </th>
+                            {% endif %}
+                            <th class="text-end fw-lighter">{{u.status}}</th>
+
+
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse multi-collapse" id="multicollapseExample3">
+        <div class="">
+            <div class="container p-5">
+                <table class="table" style="font-size: 0.9rem;">
+                    <thead class="bg-dark text-light">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col" class="text-end">Submitted by</th>
+                            <th scope="col" class="text-end">Date of Submission</th>
+                            <th scope="col" class="text-end">Expected Date of Delivery</th>
+                            <th scope="col" class="text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for u in all_delivered_to_user %}
+                        <tr>
+
+                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
+                            <th class="text-end fw-lighter"> {{u.date}}</th>
+                            {% if u.date_of_delivery != u.date %}
+                            <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
+                            {% else %}
+                            <th class="text-end fw-lighter"> N/A </th>
+                            {% endif %}
+                            <th class="text-end fw-lighter">{{u.status}}</th>
+
+
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!-- Collapse section ends-->
+
+<!-- by user -->
+    <div class="container px-5">
+        <h6 class=" text-center">Requisitions Submitted by You</h6>
+        <div class="d-flex justify-content-center pt-3">
+            
+            <a data-bs-toggle="collapse" href="#multicollapseExample4" role="button" aria-expanded="false"
+            aria-controls="multicollapseExample">
+                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FF6F61;">
+                    <h5>Total Pending</h5>
+                    <h1>{{total_pending_by_user}}</h1>
+                </div>
+            </a>
+
+            <a data-bs-toggle="collapse" href="#multicollapseExample5" role="button" aria-expanded="false"
+            aria-controls="multicollapseExample">
+                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #21486f;">
+                    <h5>Total Processing</h5>
+                    <h1>{{total_processing_by_user}}</h1>
+                </div>
+            </a>
+
+            <a data-bs-toggle="collapse" href="#multicollapseExample6" role="button" aria-expanded="false"
+            aria-controls="multicollapseExample">
+                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #00AD9C ;">
+                    <h5>Total Delivered</h5>
+                    <h1>{{total_delivered_by_user}}</h1>
+                </div>
+            </a>
+
+        </div>
+
+
+    </div>
+
+    <!-- Collapse section -->
+    <div class="collapse multi-collapse" id="multicollapseExample4">
+        <div class="">
+            <div class="container p-5">
+                <table class="table" style="font-size: 0.9rem;">
+                    <thead class="bg-dark text-light">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col" class="text-end">Submitted by</th>
+                            <th scope="col" class="text-end">Date of Submission</th>
+                            <th scope="col" class="text-end">Expected Date of Delivery</th>
+                            <th scope="col" class="text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for u in all_pending_by_user %}
+                        <tr>
+
+                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
+                            <th class="text-end fw-lighter"> {{u.date}}</th>
+                            {% if u.date_of_delivery != u.date %}
+                            <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
+                            {% else %}
+                            <th class="text-end fw-lighter"> N/A </th>
+                            {% endif %}
+                            <th class="text-end fw-lighter">{{u.status}}</th>
+
+
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse multi-collapse" id="multicollapseExample5">
+        <div class="">
+            <div class="container p-5">
+                <table class="table" style="font-size: 0.9rem;">
+                    <thead class="bg-dark text-light">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col" class="text-end">Submitted by</th>
+                            <th scope="col" class="text-end">Date of Submission</th>
+                            <th scope="col" class="text-end">Expected Date of Delivery</th>
+                            <th scope="col" class="text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for u in all_processing_by_user %}
+                        <tr>
+
+                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
+                            <th class="text-end fw-lighter"> {{u.date}}</th>
+                            {% if u.date_of_delivery != u.date %}
+                            <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
+                            {% else %}
+                            <th class="text-end fw-lighter"> N/A </th>
+                            {% endif %}
+                            <th class="text-end fw-lighter">{{u.status}}</th>
+
+
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse multi-collapse" id="multicollapseExample6">
+        <div class="">
+            <div class="container p-5">
+                <table class="table" style="font-size: 0.9rem;">
+                    <thead class="bg-dark text-light">
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col" class="text-end">Submitted by</th>
+                            <th scope="col" class="text-end">Date of Submission</th>
+                            <th scope="col" class="text-end">Expected Date of Delivery</th>
+                            <th scope="col" class="text-end">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for u in all_delivered_by_user %}
+                        <tr>
+
+                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
+                            <th class="text-end fw-lighter"> {{u.date}}</th>
+                            {% if u.date_of_delivery != u.date %}
+                            <th class="text-end fw-lighter"> {{u.date_of_delivery}}</th>
+                            {% else %}
+                            <th class="text-end fw-lighter"> N/A </th>
+                            {% endif %}
+                            <th class="text-end fw-lighter">{{u.status}}</th>
+
+
+                        </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+<!-- Collapse section ends-->
+
 
 </div>
 
 
 
-  
+
 
 {% endblock %}

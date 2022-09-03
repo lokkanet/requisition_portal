@@ -1,0 +1,51 @@
+{% extends 'user/base.html' %}
+{% block content %}
+{%load static%}
+
+
+<div class="homebody" style="">
+    <div class="container p-5">
+        <div class="d-flex justify-content-around">
+            <div class="card col-4" style="height: 300px; width:300px;">
+                {% if profil.image %}
+                <img src="{{ profil.image.url }}" alt="">
+                {% endif %}
+            </div>
+            <div class="col-6 py-5">
+                <h4>{{user_profil}}'s Profile</h4>
+                <table class="table table-striped">
+                   
+  
+                      <tr>
+                          <td colspan="2">Name</td>
+                          <th scope="row">{{profil.name}}</th>
+                      
+                      </tr>
+                      <tr>
+                          <td colspan="2"> Email</td>
+                        <th scope="row">{{profil.email}}</th>
+                        
+                      </tr>
+                      <tr>
+                          <td colspan="2"> Phone</td>
+                          <th scope="row">{{profil.phone}}</th>
+                        
+                      </tr>
+                      <tr>
+                          <td colspan="2"> Date Joined</td>
+                          <th scope="row">{{profil.date_created}}</th>
+                        
+                      </tr>
+                  
+                  </table>
+
+                  <button class="btn btn-primary">Update Profile</button>
+               
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
