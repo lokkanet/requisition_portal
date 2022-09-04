@@ -1,0 +1,28 @@
+{% extends 'user/base.html' %}
+{% block content %}
+{%load static%}
+
+
+
+<div class="homebody">
+    
+    
+    <div class="container p-5">
+        <form action="" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" value="ok">
+            {{form.errors}}
+        </form>
+    </div>
+    
+    
+</div>
+
+
+
+
+
+
+
+{% endblock %}

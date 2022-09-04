@@ -1,4 +1,4 @@
-from multiprocessing import dummy
+from multiprocessing import context, dummy
 from unicodedata import name
 from urllib import request
 from django.shortcuts import render, redirect
@@ -131,9 +131,27 @@ def profile(request):
 
 
 
+# PROFILE UPDATE PAGE======================
+@login_required(login_url='loginpage')
+@allowed_users(allowed_roles=['employee'])
+def update_profile(request):
+    profil = request.user.newuser
+    user_profil = request.user
+    form = UpdateProfileForm(instance= profil)
+    if request.method == 'POST':
+        form = UpdateProfileForm(request.POST, request.FILES, instance=profil)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
+        else:
+            print('invalid form')
 
-
-
+    context = {
+        'user_profil': user_profil,
+        'profil':profil,
+        'form': form,
+    }
+    return render(request, "user/update_profile.html", context)
 
 
 
@@ -228,8 +246,8 @@ def userpage1(request):
     all_processing_to_user = u_r.filter(status = 'Processing').exclude(submitted_by__name= employee.name)
     all_delivered_to_user = u_r.filter(status = 'Delivered').exclude(submitted_by__name= employee.name)
 
-    all_pending_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name)
-    all_processing_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name)
+    all_pending_by_user = u_r.filter(status = 'Pending', submitted_by__name= employee.name)
+    all_processing_by_user = u_r.filter(status = 'Processing', submitted_by__name= employee.name)
     all_delivered_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name)
 
 
@@ -315,12 +333,14 @@ def userpage1(request):
 def requisitions(request, pk):
     requisition = Requisition.objects.get(id=pk)
     employee = request.user
+    files = requisition.files.all()
     # submitted_by = requisition.submitted_by
     # submitted_to = requisition.send_to.exclude(user = submitted_by)
 
     context = {
         'requisition':requisition,
         'employee' : employee,
+        'files':files,
         # 'submitted_to': submitted_to,
 
     }
@@ -334,18 +354,41 @@ def requisitions(request, pk):
 def create_requisition(request, pk):
     employee = NewUser.objects.get(id=pk)
     form = RequisitionForm()
+    formfile = MultiFileForm()
+
+
     if request.method == 'POST':
-        form = RequisitionForm(request.POST, request.FILES)
-        # form.employee = [request.user,]
+        form = RequisitionForm(request.POST)
+        formfile = MultiFileForm(request.POST or None, request.FILES or None)
+        files = request.FILES.getlist('file')
+
         
-        if form.is_valid():
-            
+        
+       
+        
+        if form.is_valid() and formfile.is_valid():
             r= form.save()
             r.submitted_by = employee
             r.send_to.add(employee)
             # # created by stamp
             r.status= 'Pending'
             r.save()
+
+            for f in files:
+                MultiFile.objects.create(
+                    req = r,
+                    file = f,
+                )
+            # f = formfile.save(commit=False)
+            # f.save()
+
+
+            # r.submitted_by = employee
+            # r.send_to.add(employee)
+            # # # created by stamp
+            # r.status= 'Pending'
+            # r.save()
+
             
             
             # email section 
@@ -368,8 +411,12 @@ def create_requisition(request, pk):
 
 
             return redirect('/')
+    context = {
+        'form':form,
+        'formfile':formfile 
+    }        
 
-    return render(request, 'user/new_requisition.html', {'form':form })
+    return render(request, 'user/new_requisition.html', context)
 
 
 

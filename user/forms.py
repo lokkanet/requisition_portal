@@ -1,3 +1,5 @@
+from email.mime import image
+from pyexpat import model
 from random import choices
 from select import select
 from django.forms import ModelForm
@@ -25,7 +27,23 @@ class RequisitionForm(ModelForm):
         widget=forms.SelectMultiple,
         
     )
+    # file = forms.FileField(
+    #     widget=forms.ClearableFileInput(attrs={'multiple': True})
+    #     )
     
+
+class MultiFileForm(ModelForm):
+    class Meta:
+        model = MultiFile
+        # RequisitionForm.Meta.fields + 
+        fields = ['file',]
+
+    file = forms.FileField(
+        widget=forms.ClearableFileInput(attrs={'multiple': True})
+        )
+
+
+
 class UpdateForm(ModelForm):
     class Meta:
         model = Requisition
@@ -67,4 +85,8 @@ class CreateUserForm(UserCreationForm):
 
 
 
-
+class UpdateProfileForm(ModelForm):
+    class Meta:
+        model = NewUser
+        fields = ['name', 'phone', 'image']
+        

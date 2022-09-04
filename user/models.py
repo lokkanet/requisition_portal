@@ -29,6 +29,8 @@ class Requisition(models.Model):
 
     submitted_by = models.ForeignKey(NewUser, null=True, on_delete=models.CASCADE, related_name='to_be_sent_by', blank=True )
 
+
+
     send_to = models.ManyToManyField(NewUser)
 
 
@@ -38,10 +40,19 @@ class Requisition(models.Model):
     date = models.DateField(auto_now_add=True, null= True, blank= True)
     date_of_delivery = models.DateField(default=datetime.date.today(), null=True, blank=True)
 
-    file = models.FileField(upload_to='user/files/')
+    
 
 
     status = models.CharField(max_length=200, null=True, blank=True, choices=STATUS)
 
     def __str__(self):
         return self.title
+
+
+
+class MultiFile(models.Model):
+    file = models.FileField(upload_to='user/files/')
+    req = models.ForeignKey(Requisition, on_delete=models.CASCADE, related_name='files')
+
+    def __str__(self):
+        return self.req.title

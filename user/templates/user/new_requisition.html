@@ -15,31 +15,30 @@
   </style>
 
 
-<div class="homebody">
+<div class="" style="min-height: 1024px;">
     <div class="container p-5">
         <h5 class="text-center mb-3">New Requisition</h5>
         <div class="d-flex justify-content-center">
     
             <div class="col-4">
+                
+
+
                 <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-    
-    
-    
-    
+
                     <p>{{ form.title|as_crispy_field }}</p>
-                    <p>{{ form.file|as_crispy_field }}</p>
-                    <!-- {{ form.status|as_crispy_field }} -->
-    
+                    
                     <p>{{ form.send_to|as_crispy_field}}</p>
-    
-                   <br>
+
+                    
+                
+                    <p>{{formfile.file|as_crispy_field}}</p>
+                    
+                    {{formfile.errors}}
+
                     <button class="btn btn-primary" type="submit">Submit</button>
-    
-    
-    
-    
-    
+
                 </form>
             </div>
         </div>
