@@ -5,109 +5,100 @@
 
 
 
-<div class="homebody">
-   
-       
-        <div class="row m-0 p-5">
+<div class="" style="min-height: 1024px;">
 
 
-            <div class=" col-4 p-5" >
-                <div class="card-body">
-                    <h5 class="card-title">{{requisition.title}}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">
-                        <p>Created on <br>{{requisition.date}}</p>
-                    </h6>
-                   
-                    <div class="">
-                       
-                            <p class="m-0 p-0">Submitted by &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong class="m-0 p-0">{{requisition.submitted_by}}</strong></p>
-                            <p class="m-0 p-0">Submitted to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            {% for r in requisition.send_to.all %}
-                            {% if r.name != requisition.submitted_by.name %}
-                            <strong class="m-0 p-0"> {{r}}</strong>
-                            {% endif %}
-                            {%endfor%}
-                             </p>
-                      
-                    </div>
-                    <br>
+  <div class="row m-0 p-5">
 
 
+    <div class=" col-4 p-5">
+      <div class="card-body">
+        <h5 class="card-title">{{requisition.title}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          <p>Created on <br>{{requisition.date}}</p>
+        </h6>
 
-                    {% if requisition.status == 'Processing' %}
-                    <p class="m-0 p-0">Expected Date of Delivery &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
-                     <strong class="m-0 p-0">{{requisition.date_of_delivery}}</strong>
-                     <hr>
-                    {%endif%}
+        <div class="">
 
-
-
-
-                    <div class="d-flex justify-content-start">
-                        <p class="m-0 p-0"> Status </p>
-                        {% if requisition.status == 'Pending' %}
-                        <a class="btn btn-warning mx-5 py-1">{{requisition.status}}</a>
-                        {% elif requisition.status == 'Processing' %}
-                        <a class="btn btn-success mx-5">{{requisition.status}}</a>
-                        {% else %}
-                        <a class="btn btn-light text-success mx-5">{{requisition.status}}</a>
-                        {% endif %}
-                      </div>
-                   
-                    
-
-                    
-
-                    
-                </div>
-            </div>
-
-
-           
-
-           
-
-
-            <div class="col-8">
-                <div class="d-flex justify-content-between py-1">
-                    <div>
-                        {% if requisition.status != 'Delivered' %}
-                    <a href="{% url 'update_requisition' requisition.id %}" class="btn btn-primary">UPDATE</a>
-                    <a href="{% url 'delete_requisition' requisition.id %}" class="btn btn-secondary">DELETE</a>
-                    {% endif %}
-                    </div>
-                    <a href="{{requisition.file.url}}" class="btn btn-primary">View File in a New Tab</a>
-                   
-                 </div>
-
-
-                 <div class="accordion accordion-flush" id="accordionFlushExample">
-                    {% for f in files %}
-                    <div class="accordion-item">
-                      <h2 class="accordion-header" id="flush-headingOne">
-                        <button class="accordion-button collapsed btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                          1
-                        </button>
-                      </h2>
-                      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            <embed src="{{f.file.url}}" type="" width="100%" height="600" class="border" />
-                        </div>
-                      </div>
-                    </div>
-                    {%endfor%}
-                   
-                  </div>
-
-
-                  
-               {%for f in files%}
-                    <embed src="{{f.file.url}}" type="" width="100%" height="600" class="border" />
-                  {%endfor%}
-
-            </div>
+          <p class="m-0 p-0">Submitted by &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong
+              class="m-0 p-0">{{requisition.submitted_by}}</strong></p>
+          <p class="m-0 p-0">Submitted to &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {% for r in requisition.send_to.all %}
+            {% if r.name != requisition.submitted_by.name %}
+            <strong class="m-0 p-0"> {{r}}</strong>
+            {% endif %}
+            {%endfor%}
+          </p>
 
         </div>
+        <br>
+
+
+
+        {% if requisition.status == 'Processing' %}
+        <p class="m-0 p-0">Expected Date of Delivery &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+        <strong class="m-0 p-0">{{requisition.date_of_delivery}}</strong>
+        <hr>
+        {%endif%}
+
+
+
+
+        <div class="d-flex justify-content-start">
+          <p class="m-0 p-0"> Status </p>
+          {% if requisition.status == 'Pending' %}
+          <a class="btn btn-warning mx-5 py-1">{{requisition.status}}</a>
+          {% elif requisition.status == 'Processing' %}
+          <a class="btn btn-success mx-5">{{requisition.status}}</a>
+          {% elif requisition.status == 'Delivered' %}
+          <a class="btn btn-light text-success mx-5">{{requisition.status}}</a>
+          {% endif %}
+        </div>
+
+        <div class="d-flex justify-content-between py-5">
+          <div>
+            {% if update %}
+            <a href="{% url 'update_requisition' requisition.id %}" class="btn btn-primary">UPDATE</a>
+            <!-- <a href="{% url 'delete_requisition' requisition.id %}" class="btn btn-secondary">DELETE</a> -->
+            {% endif %}
+          </div>
+
+        </div>
+
+
+
+
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <div class="col-8">
+
+
+      <div class="d-flex flex-column">
+        {%for f in files%}
+        <div class="px-5 py-1">
+          <embed src="{{f.file.url}}" type="" width="100%" height="400" class="card border" />
+          <a href="{{f.file.url}}">view file in a new tab</a>
+
+        </div>
+        {%endfor%}
+      </div>
+
+
+
+
+
+
+
+    </div>
+
+  </div>
 
 </div>
 

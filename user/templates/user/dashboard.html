@@ -69,7 +69,7 @@
         <div class="">
             <div class="container p-5">
                 <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-dark text-light">
+                    <thead class="bg-info text-light">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -83,7 +83,7 @@
                         {% for u in all_pending_to_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -108,7 +108,7 @@
         <div class="">
             <div class="container p-5">
                 <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-dark text-light">
+                    <thead class="bg-info text-light">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -122,7 +122,7 @@
                         {% for u in all_processing_to_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -147,7 +147,7 @@
         <div class="">
             <div class="container p-5">
                 <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-dark text-light">
+                    <thead class="bg-info text-light">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -161,7 +161,7 @@
                         {% for u in all_delivered_to_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -226,7 +226,7 @@
         <div class="">
             <div class="container p-5">
                 <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-dark text-light">
+                    <thead class="bg-info text-light">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -240,7 +240,7 @@
                         {% for u in all_pending_by_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -265,7 +265,7 @@
         <div class="">
             <div class="container p-5">
                 <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-dark text-light">
+                    <thead class="bg-info text-light">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -279,7 +279,7 @@
                         {% for u in all_processing_by_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -304,7 +304,7 @@
         <div class="">
             <div class="container p-5">
                 <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-dark text-light">
+                    <thead class="bg-info text-light">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -318,7 +318,7 @@
                         {% for u in all_delivered_by_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="" class="">{{u}}</a> </th>
+                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}

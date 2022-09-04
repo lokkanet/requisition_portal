@@ -88,5 +88,5 @@ class CreateUserForm(UserCreationForm):
 class UpdateProfileForm(ModelForm):
     class Meta:
         model = NewUser
-        fields = ['name', 'phone', 'image']
+        fields = [ 'phone', 'image']
         

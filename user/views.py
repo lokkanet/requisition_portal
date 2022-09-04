@@ -1,4 +1,5 @@
 from multiprocessing import context, dummy
+
 from unicodedata import name
 from urllib import request
 from django.shortcuts import render, redirect
@@ -184,60 +185,11 @@ def userpage(request):
     }
     return render(request, "user/userpage.html", context)
 
+
+
 @login_required(login_url='loginpage')
 @allowed_users(allowed_roles=['employee'])
 def userpage0(request):
-    requisitions = request.user.newuser.requisition_set.all().order_by('-id')
-    u_r = request.user.newuser.requisition_set.all()
-    employee = request.user.newuser
-
-    all_pending_to_user = u_r.filter(status = 'Pending').exclude(submitted_by__name= employee.name)
-    all_processing_to_user = u_r.filter(status = 'Processing').exclude(submitted_by__name= employee.name)
-    all_delivered_to_user = u_r.filter(status = 'Delivered').exclude(submitted_by__name= employee.name)
-
-    all_pending_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name)
-    all_processing_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name)
-    all_delivered_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name)
-
-
-    total_pending_to_user = u_r.filter(status = 'Pending').exclude(submitted_by__name= employee.name).count()
-    total_processing_to_user = u_r.filter(status = 'Processing').exclude(submitted_by__name= employee.name).count()
-    total_delivered_to_user = u_r.filter(status = 'Delivered').exclude(submitted_by__name= employee.name).count()
-
-    total_pending_by_user = u_r.filter(status = 'Pending', submitted_by__name= employee.name).count()
-    total_processing_by_user = u_r.filter(status = 'Processing', submitted_by__name= employee.name).count()
-    total_delivered_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name).count()
-
-    
-
-
-    
-     
-    context = {
-        'requisitions':requisitions,
-        'employee':employee,
-
-        'all_pending_to_user':all_pending_to_user,
-        'all_processing_to_user': all_processing_to_user,
-        'all_delivered_to_user':all_delivered_to_user,
-
-        'all_pending_by_user':all_pending_by_user,
-        'all_processing_by_user':all_processing_by_user, 
-        'all_delivered_by_user':all_delivered_by_user,
-
-
-        'total_pending_to_user' : total_pending_to_user,
-        'total_processing_to_user': total_processing_to_user,
-        'total_delivered_to_user': total_delivered_to_user,
-        'total_pending_by_user' : total_pending_by_user ,
-        'total_processing_by_user':total_processing_by_user,
-        'total_delivered_by_user':total_delivered_by_user,
-
-    }
-    return render(request, "user/dashboard.html", context)
-
-
-def userpage1(request):
     requisitions = request.user.newuser.requisition_set.all().order_by('-id')
     u_r = request.user.newuser.requisition_set.all()
     employee = request.user.newuser
@@ -260,23 +212,16 @@ def userpage1(request):
     total_delivered_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name).count()
 
     
-
-
-    
      
     context = {
         'requisitions':requisitions,
         'employee':employee,
-
         'all_pending_to_user':all_pending_to_user,
         'all_processing_to_user': all_processing_to_user,
         'all_delivered_to_user':all_delivered_to_user,
-
         'all_pending_by_user':all_pending_by_user,
         'all_processing_by_user':all_processing_by_user, 
         'all_delivered_by_user':all_delivered_by_user,
-
-
         'total_pending_to_user' : total_pending_to_user,
         'total_processing_to_user': total_processing_to_user,
         'total_delivered_to_user': total_delivered_to_user,
@@ -285,7 +230,8 @@ def userpage1(request):
         'total_delivered_by_user':total_delivered_by_user,
 
     }
-    return render(request, "user/dashboard_detail.html", context)
+    return render(request, "user/dashboard.html", context)
+
 
 
 
@@ -334,13 +280,27 @@ def requisitions(request, pk):
     requisition = Requisition.objects.get(id=pk)
     employee = request.user
     files = requisition.files.all()
+    
     # submitted_by = requisition.submitted_by
     # submitted_to = requisition.send_to.exclude(user = submitted_by)
+    if requisition.status == 'Pending':
+        if requisition.submitted_by == employee.newuser:
+            update = False
+        else:
+            update = True
+    elif requisition.status == 'Processing':
+        update = True
+    elif requisition.status == 'Delivered':
+        update = False
+    else:
+        update = True
+
 
     context = {
         'requisition':requisition,
         'employee' : employee,
         'files':files,
+        'update':update,
         # 'submitted_to': submitted_to,
 
     }
@@ -362,10 +322,7 @@ def create_requisition(request, pk):
         formfile = MultiFileForm(request.POST or None, request.FILES or None)
         files = request.FILES.getlist('file')
 
-        
-        
-       
-        
+ 
         if form.is_valid() and formfile.is_valid():
             r= form.save()
             r.submitted_by = employee
@@ -425,26 +382,44 @@ def create_requisition(request, pk):
 @allowed_users(allowed_roles=['employee'])
 def update_requisition(request, pk):
     requisition= Requisition.objects.get(id=pk)
-    print(requisition.send_to.all())
-    print(request.user)
-    print('test')
+    formfile = MultiFileForm()
     form = UpdateForm(instance=requisition)
+    file_upload = False
+    formfile = MultiFileForm()
+    if request.method == 'POST':
+        formfile = MultiFileForm(request.POST or None, request.FILES or None)
+        files = request.FILES.getlist('file')
+
+        if formfile.is_valid():
+            for f in files:
+                MultiFile.objects.create(
+                            req = requisition,
+                            file = f,
+                        )
+
     if request.method == 'POST':
         form = UpdateForm(request.POST or None, instance=requisition) 
         form.has_changed()
-        
+
+        if file_upload:
+            formfile = MultiFileForm()
+            if request.method == 'POST':
+                formfile = MultiFileForm(request.POST or None, request.FILES or None)
+                files = request.FILES.getlist('file')
+
+                if formfile.is_valid():
+                    for f in files:
+                        MultiFile.objects.create(
+                            req = requisition,
+                            file = f,
+                        )
 
         if form.is_valid():
-            form.save()
-            # form.send_to.create(requisition)
-            # r= form.save(commit=False)
-            # r.send_to = requisition.send_to.all()
-            # print(r)
-            # r.save()
-            # form.save_m2m()
+            r = form.save()
 
+            
 
-            # email section->
+           # email section->
             
             req_title = requisition.title
             employee = request.user.newuser
@@ -470,7 +445,12 @@ def update_requisition(request, pk):
         else:
             print('not valid')
 
-    return render(request, 'user/update_requisition.html', {'form':form, 'requisition':requisition })
+    context = {
+        'form':form,
+        'requisition':requisition,
+        'formfile':formfile,
+    }
+    return render(request, 'user/update_requisition.html', context)
 
 
 @login_required(login_url='loginpage')

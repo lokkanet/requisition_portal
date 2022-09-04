@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'requisition.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'requisition',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
+        'NAME': 'requisition2',
+        'USER': 'shfaria',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
     }

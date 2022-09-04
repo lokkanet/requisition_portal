@@ -31,9 +31,9 @@ urlpatterns = [
 
 
 
-    path('', views.userpage, name='userpage'),
-    path('dashboard/', views.userpage0, name='userpage0'),
-    path('dashboard_detail/', views.userpage1, name='dashboard_detail'),
+    path('all_requisitions/', views.userpage, name='userpage'),
+    path('', views.userpage0, name='userpage0'),
+    # path('dashboard_detail/', views.userpage1, name='dashboard_detail'),
 
 
 
