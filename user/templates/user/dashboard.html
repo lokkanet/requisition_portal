@@ -9,17 +9,24 @@
         color: black;
     }
 
-    a {
-        text-decoration: none;
+    a{
         color: black;
+        text-decoration: none;
     }
 
     a:hover {
         color: white;
+
     }
 
     .card {
         margin: 10px;
+    }
+    table a, table a:hover{
+        color: black;
+    }
+    table tbody tr{
+        background-color: white;
     }
 </style>
 
@@ -27,38 +34,36 @@
 <div class="" style="min-height: 1024px;">
    
 <!-- to user -->
-    <div class="container p-5">
-        <h6 class="text-center">Requisitions Submitted To You</h6>
-        
-
-        <div class="d-flex justify-content-center pt-3">
-           
+    <div class=" container p-5">
+        <div class="" >
+            <h5 class="text-center text-dark bg-info bg-opacity-50 py-2 mx-5" >Requisitions Submitted To You</h5>
             
-            <a data-bs-toggle="collapse" href="#multicollapseExample1" role="button" aria-expanded="false"
+            <div class="d-flex justify-content-center pt-3">
+            
+            
+                <a data-bs-toggle="collapse" href="#multicollapseExample1" role="button" aria-expanded="false"
+                    aria-controls="multicollapseExample">
+                    <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FF6200;">
+                        <h5> Total Pending</h5>
+                        <h1>{{total_pending_to_user}}</h1>
+                    </div>
+                </a>
+            
+                <a data-bs-toggle="collapse" href="#multicollapseExample2" role="button" aria-expanded="false"
                 aria-controls="multicollapseExample">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FF6200;">
-                    <h5> Total Pending</h5>
-                    <h1>{{total_pending_to_user}}</h1>
-                </div>
-            </a>
-            
-
-
-            <a data-bs-toggle="collapse" href="#multicollapseExample2" role="button" aria-expanded="false"
-            aria-controls="multicollapseExample">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FFB225;">
-                    <h5>Total Processing</h5>
-                    <h1>{{total_processing_to_user}}</h1>
-                </div>
-            </a>
-            <a data-bs-toggle="collapse" href="#multicollapseExample3" role="button" aria-expanded="false"
-            aria-controls="multicollapseExample">
-                <div class="card  opacity-75 text-center px-5 py-4" style=" background-color: #009350;">
-                    <h5>Total Delivered</h5>
-                    <h1>{{total_delivered_to_user}}</h1>
-                </div>
-            </a>
-
+                    <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FFB225;">
+                        <h5>Total Processing</h5>
+                        <h1>{{total_processing_to_user}}</h1>
+                    </div>
+                </a>
+                <a data-bs-toggle="collapse" href="#multicollapseExample3" role="button" aria-expanded="false"
+                aria-controls="multicollapseExample">
+                    <div class="card  opacity-75 text-center px-5 py-4" style=" background-color: #009350;">
+                        <h5>Total Delivered</h5>
+                        <h1>{{total_delivered_to_user}}</h1>
+                    </div>
+                </a>
+            </div>
         </div>
 
 
@@ -68,8 +73,8 @@
     <div class="collapse multi-collapse" id="multicollapseExample1">
         <div class="">
             <div class="container p-5">
-                <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-info text-light">
+                <table class="table table-info" style="font-size: 0.9rem;">
+                    <thead class="">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -83,7 +88,7 @@
                         {% for u in all_pending_to_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
+                            <th class="col-4"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -107,8 +112,8 @@
     <div class="collapse multi-collapse" id="multicollapseExample2">
         <div class="">
             <div class="container p-5">
-                <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-info text-light">
+                <table class="table table-info" style="font-size: 0.9rem;">
+                    <thead class="">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -122,7 +127,7 @@
                         {% for u in all_processing_to_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
+                            <th class="col-4"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -146,8 +151,8 @@
     <div class="collapse multi-collapse" id="multicollapseExample3">
         <div class="">
             <div class="container p-5">
-                <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-info text-light">
+                <table class="table table-info" style="font-size: 0.9rem;">
+                    <thead class="">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -161,7 +166,7 @@
                         {% for u in all_delivered_to_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
+                            <th class="col-4"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -189,33 +194,32 @@
 
 <!-- by user -->
     <div class="container px-5">
-        <h6 class=" text-center">Requisitions Submitted by You</h6>
-        <div class="d-flex justify-content-center pt-3">
+        <div class="" >
+            <h5 class=" text-center text-dark bg-info bg-opacity-50 py-2 mx-5">Requisitions Submitted by You</h5>
+            <div class="d-flex justify-content-center pt-3">
             
-            <a data-bs-toggle="collapse" href="#multicollapseExample4" role="button" aria-expanded="false"
-            aria-controls="multicollapseExample">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FF6F61;">
-                    <h5>Total Pending</h5>
-                    <h1>{{total_pending_by_user}}</h1>
-                </div>
-            </a>
-
-            <a data-bs-toggle="collapse" href="#multicollapseExample5" role="button" aria-expanded="false"
-            aria-controls="multicollapseExample">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #21486f;">
-                    <h5>Total Processing</h5>
-                    <h1>{{total_processing_by_user}}</h1>
-                </div>
-            </a>
-
-            <a data-bs-toggle="collapse" href="#multicollapseExample6" role="button" aria-expanded="false"
-            aria-controls="multicollapseExample">
-                <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #00AD9C ;">
-                    <h5>Total Delivered</h5>
-                    <h1>{{total_delivered_by_user}}</h1>
-                </div>
-            </a>
-
+                <a data-bs-toggle="collapse" href="#multicollapseExample4" role="button" aria-expanded="false"
+                aria-controls="multicollapseExample">
+                    <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #FF6F61;">
+                        <h5>Total Pending</h5>
+                        <h1>{{total_pending_by_user}}</h1>
+                    </div>
+                </a>
+                <a data-bs-toggle="collapse" href="#multicollapseExample5" role="button" aria-expanded="false"
+                aria-controls="multicollapseExample">
+                    <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #21486f;">
+                        <h5>Total Processing</h5>
+                        <h1>{{total_processing_by_user}}</h1>
+                    </div>
+                </a>
+                <a data-bs-toggle="collapse" href="#multicollapseExample6" role="button" aria-expanded="false"
+                aria-controls="multicollapseExample">
+                    <div class="card opacity-75 text-center px-5 py-4" style=" background-color: #00AD9C ;">
+                        <h5>Total Delivered</h5>
+                        <h1>{{total_delivered_by_user}}</h1>
+                    </div>
+                </a>
+            </div>
         </div>
 
 
@@ -225,8 +229,8 @@
     <div class="collapse multi-collapse" id="multicollapseExample4">
         <div class="">
             <div class="container p-5">
-                <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-info text-light">
+                <table class="table table-info" style="font-size: 0.9rem;">
+                    <thead class="">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -240,7 +244,7 @@
                         {% for u in all_pending_by_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
+                            <th class="col-4"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -264,8 +268,8 @@
     <div class="collapse multi-collapse" id="multicollapseExample5">
         <div class="">
             <div class="container p-5">
-                <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-info text-light">
+                <table class="table table-info" style="font-size: 0.9rem;">
+                    <thead class="">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -279,7 +283,7 @@
                         {% for u in all_processing_by_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
+                            <th class="col-4"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}
@@ -303,8 +307,8 @@
     <div class="collapse multi-collapse" id="multicollapseExample6">
         <div class="">
             <div class="container p-5">
-                <table class="table" style="font-size: 0.9rem;">
-                    <thead class="bg-info text-light">
+                <table class="table table-info" style="font-size: 0.9rem;">
+                    <thead class="">
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col" class="text-end">Submitted by</th>
@@ -318,7 +322,7 @@
                         {% for u in all_delivered_by_user %}
                         <tr>
 
-                            <th class="col-6"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
+                            <th class="col-4"> <a href="{% url 'requisitions' u.id %}" class="">{{u}}</a> </th>
                             <th class="text-end fw-lighter">{{u.submitted_by.name}}</th>
                             <th class="text-end fw-lighter"> {{u.date}}</th>
                             {% if u.date_of_delivery != u.date %}

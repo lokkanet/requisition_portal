@@ -4,17 +4,30 @@
 {% load crispy_forms_tags %}
 
 
+<style>
+    .asteriskField {
+        display: none;
+    }
+</style>
+
+
 
 <div class="homebody">
     
     
     <div class="container p-5">
-        <form action="" method="POST" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{form}}
-            <input type="submit" value="ok">
-            {{form.errors}}
-        </form>
+        <div class="card p-5">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card p-3">{{form.image|as_crispy_field }}</div>
+
+                <br>
+
+                {{form.phone|as_crispy_field }}
+                <br>
+                <button class="btn btn-success" type="submit">Update</button>
+            </form>
+        </div>
     </div>
     
     

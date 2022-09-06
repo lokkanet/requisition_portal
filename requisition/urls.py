@@ -47,6 +47,9 @@ urlpatterns = [
     path('create_requisition/<str:pk>', views.create_requisition, name='create_requisition'),
     path('delete_requisition/<str:pk>', views.delete_requisition, name='delete_requisition'),
     path('update_requisition/<str:pk>', views.update_requisition, name='update_requisition'),
+    path('update_pending_requisition/<str:pk>', views.update_pending_requisition, name='update_pending_requisition'),
+
+
     path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/', views.activate, name='activate'),  
     
 ]

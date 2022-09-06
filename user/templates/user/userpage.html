@@ -16,8 +16,8 @@
     <div class="d-flex justify-content-between py-3">
       <h5 class="text-center  my-3 mx-5">Requisitions Submitted to You</h5>
 
-      <a href="{% url 'create_requisition' employee.id %}" class="btn btn-light border border-2 mb-3 mx-5">Create New
-        Requisition</a>
+      <!-- <a href="{% url 'create_requisition' employee.id %}" class="btn btn-light border border-2 mb-3 mx-5">Create New
+        Requisition</a> -->
     </div>
 
     <div class="d-flex justify-content-center px-5 pb-5">
@@ -30,6 +30,7 @@
               <th scope="col">Title</th>
               <th scope="col" class="text-end">Submitted by</th>
               <th scope="col" class="text-end">Date of Submission</th>
+              <th scope="col" class="text-end">Expected Date of Delivery</th>
               <th scope="col" class="text-end">Status</th>
             </tr>
           </thead>
@@ -39,9 +40,14 @@
             {% if requisitions.submitted_by.name != employee.name %}
             <tr>
 
-              <th class="col-6"> <a href="{% url 'requisitions' requisitions.id %}" class="">{{requisitions}}</a> </th>
+              <th class="col-4"> <a href="{% url 'requisitions' requisitions.id %}" class="">{{requisitions}}</a> </th>
               <th class="text-end fw-lighter">{{requisitions.submitted_by.name}}</th>
               <th class="text-end fw-lighter"> {{requisitions.date}}</th>
+              {% if requisitions.date_of_delivery != requisitions.date %}
+              <th class="text-end fw-lighter"> {{requisitions.date_of_delivery}}</th>
+              {% else %}
+              <th class="text-end fw-lighter"> N/A </th>
+              {% endif %}
               <th class="text-end fw-lighter">{{requisitions.status}}</th>
 
 
@@ -79,6 +85,7 @@
               <th scope="col">Title</th>
               <th scope="col" class="text-end">Submitted by</th>
               <th scope="col" class="text-end">Date of Submission</th>
+              <th scope="col" class="text-end">Expected Date of Delivery</th>
               <th scope="col" class="text-end">Status</th>
             </tr>
           </thead>
@@ -88,9 +95,14 @@
             {% if requisitions.submitted_by.name == employee.name %}
             <tr>
 
-              <th class="col-6"> <a href="{% url 'requisitions' requisitions.id %}" class="">{{requisitions}}</a> </th>
+              <th class="col-4"> <a href="{% url 'requisitions' requisitions.id %}" class="">{{requisitions}}</a> </th>
               <th class="text-end fw-lighter">{{requisitions.submitted_by.name}}</th>
               <th class="text-end fw-lighter"> {{requisitions.date}}</th>
+              {% if requisitions.date_of_delivery != requisitions.date %}
+              <th class="text-end fw-lighter"> {{requisitions.date_of_delivery}}</th>
+              {% else %}
+              <th class="text-end fw-lighter"> N/A </th>
+              {% endif %}              
               <th class="text-end fw-lighter">{{requisitions.status}}</th>
 
 

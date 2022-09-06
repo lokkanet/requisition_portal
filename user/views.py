@@ -194,13 +194,13 @@ def userpage0(request):
     u_r = request.user.newuser.requisition_set.all()
     employee = request.user.newuser
 
-    all_pending_to_user = u_r.filter(status = 'Pending').exclude(submitted_by__name= employee.name)
-    all_processing_to_user = u_r.filter(status = 'Processing').exclude(submitted_by__name= employee.name)
-    all_delivered_to_user = u_r.filter(status = 'Delivered').exclude(submitted_by__name= employee.name)
+    all_pending_to_user = u_r.filter(status = 'Pending').exclude(submitted_by__name= employee.name).order_by('-id')
+    all_processing_to_user = u_r.filter(status = 'Processing').exclude(submitted_by__name= employee.name).order_by('-id')
+    all_delivered_to_user = u_r.filter(status = 'Delivered').exclude(submitted_by__name= employee.name).order_by('-id')
 
-    all_pending_by_user = u_r.filter(status = 'Pending', submitted_by__name= employee.name)
-    all_processing_by_user = u_r.filter(status = 'Processing', submitted_by__name= employee.name)
-    all_delivered_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name)
+    all_pending_by_user = u_r.filter(status = 'Pending', submitted_by__name= employee.name).order_by('-id')
+    all_processing_by_user = u_r.filter(status = 'Processing', submitted_by__name= employee.name).order_by('-id')
+    all_delivered_by_user = u_r.filter(status = 'Delivered', submitted_by__name= employee.name).order_by('-id')
 
 
     total_pending_to_user = u_r.filter(status = 'Pending').exclude(submitted_by__name= employee.name).count()
@@ -280,11 +280,13 @@ def requisitions(request, pk):
     requisition = Requisition.objects.get(id=pk)
     employee = request.user
     files = requisition.files.all()
+    pending_update = False
     
     # submitted_by = requisition.submitted_by
     # submitted_to = requisition.send_to.exclude(user = submitted_by)
     if requisition.status == 'Pending':
         if requisition.submitted_by == employee.newuser:
+            pending_update = True
             update = False
         else:
             update = True
@@ -301,6 +303,8 @@ def requisitions(request, pk):
         'employee' : employee,
         'files':files,
         'update':update,
+        'pending_update' : pending_update,
+        
         # 'submitted_to': submitted_to,
 
     }
@@ -366,8 +370,9 @@ def create_requisition(request, pk):
                 return HttpResponse('Invalid header found.') 
             # end of email section
 
+            return redirect('requisitions', pk)
 
-            return redirect('/')
+            # return redirect('/')
     context = {
         'form':form,
         'formfile':formfile 
@@ -451,6 +456,55 @@ def update_requisition(request, pk):
         'formfile':formfile,
     }
     return render(request, 'user/update_requisition.html', context)
+
+
+
+@login_required(login_url='loginpage')
+@allowed_users(allowed_roles=['employee'])
+def update_pending_requisition(request, pk):
+    requisition= Requisition.objects.get(id=pk)
+    formfile = MultiFileForm()
+    form = RequisitionForm(instance=requisition)
+    employee = request.user.newuser
+    
+
+
+    if request.method == 'POST':
+        form = RequisitionForm(request.POST, instance=requisition)
+        formfile = MultiFileForm(request.POST or None, request.FILES or None)
+        files = request.FILES.getlist('file')
+
+ 
+        if form.is_valid() and formfile.is_valid():
+            r= form.save()
+            r.submitted_by = employee
+            r.send_to.add(employee)
+            # # created by stamp
+            r.status= 'Pending'
+            r.save()
+
+            for f in files:
+                MultiFile.objects.create(
+                    req = r,
+                    file = f,
+                )
+
+    
+
+            return redirect('requisitions', pk)
+
+
+           # email section->
+
+
+
+    context = {
+        'form':form,
+        'requisition':requisition,
+        'formfile':formfile,
+    }
+    return render(request, 'user/update_pending_requisition.html', context)
+
 
 
 @login_required(login_url='loginpage')
