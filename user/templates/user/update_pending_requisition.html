@@ -1,12 +1,7 @@
 {% extends "user/base.html" %}
 {% block content %}
-
-
-
 {%load static%}
 {% load crispy_forms_tags %}
-
-
 
 <style>
     .asteriskField {
@@ -19,35 +14,40 @@
     <div class="container p-5">
         <div class="card p-3 border border-3 mt-5" style=" color: #44755B; ">
             <h5 class="text-center mb-3">Update Requisition</h5>
-   <hr>
-           
-                
-
-
-                <form action="" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="px-5">{{ form.title|as_crispy_field }}</div>
-                    <div class="d-flex justify-content-around">
-                        <div class="col-4 p-3">
-                            
+            <hr>
+            <div class="d-flex justify-content-around">
+                <div class="col-6">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="px-5">{{ form.title|as_crispy_field }}</div>
+                        <div class="px-5">{{ form.send_to|as_crispy_field}}</div>
                         <br>
-                            {{formfile.file|as_crispy_field}}
-                            <br><br>
+                        <div class="px-5"><button class="btn btn-success" type="submit">Submit</button></div>
+                       
+                        {{form.errors}}
+                        {{formnote.errors}}
+                        {{formfile.errors}}
+                    </form>
+                </div>
+                <div class="col-6 px-5">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{formfile.file_hidden}}
+                        {{formfile.file|as_crispy_field}}
+                        <br>
+                        <button class="btn btn-secondary" type="submit">Upload</button>
+                    </form>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{formnote.note_hidden}}
+                        {{formnote.note|as_crispy_field}}
+                        <br>
+                        <button class="btn btn-secondary" type="submit">Add Note</button>
+                    </form>
+                </div>
+            </div>
 
-                            <button class="btn btn-success" type="submit">Submit</button>
 
-                        </div>
-                        <div class="col-6 p-3">
-                            {{ form.send_to|as_crispy_field}}
-                        </div>
-                    </div>
-                    
-                    {{formfile.errors}}
-
-                    <!-- <div class="m-5"><button class="btn btn-primary" type="submit">Submit</button></div> -->
-
-                </form>
-          
         </div>
     </div>
 </div>

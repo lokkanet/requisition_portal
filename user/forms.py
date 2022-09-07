@@ -33,6 +33,7 @@ class RequisitionForm(ModelForm):
     
 
 class MultiFileForm(ModelForm):
+    file_hidden = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     class Meta:
         model = MultiFile
         # RequisitionForm.Meta.fields + 
@@ -41,6 +42,16 @@ class MultiFileForm(ModelForm):
     file = forms.FileField(
         widget=forms.ClearableFileInput(attrs={'multiple': True})
         )
+
+class MultiNoteForm(ModelForm):
+    note_hidden = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
+    class Meta:
+        model = MultiNote
+        # RequisitionForm.Meta.fields + 
+        fields = ['note']
+
+    
 
 
 

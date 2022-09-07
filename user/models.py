@@ -51,6 +51,8 @@ class MultiFile(models.Model):
 class MultiNote(models.Model):
     note = models.TextField(null = True, blank=True)
     req = models.ForeignKey(Requisition, on_delete=models.CASCADE, related_name='notes')
+    date = models.DateField(auto_now_add=True, null= True, blank= True)
+    written = models.ForeignKey(NewUser, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return self.req.title
+        return self.note

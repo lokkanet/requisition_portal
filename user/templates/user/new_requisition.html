@@ -29,25 +29,21 @@
                     <div class="px-5">{{ form.title|as_crispy_field }}</div>
                     <div class="d-flex justify-content-around">
                         <div class="col-4 p-3">
-                            
-                        <br>
+                            {{formnote.note_hidden}}
+                            {{formnote.note|as_crispy_field}}
+                            <br>
+                            {{formfile.file_hidden}}
                             {{formfile.file|as_crispy_field}}
                             <br><br>
-
                             <button class="btn btn-success" type="submit">Submit</button>
-
                         </div>
-                        <div class="col-6 p-3">
+                        <div class="col-6 p-3 ">
                             {{ form.send_to|as_crispy_field}}
                         </div>
                     </div>
-                    
                     {{formfile.errors}}
-
-                    <!-- <div class="m-5"><button class="btn btn-primary" type="submit">Submit</button></div> -->
-
+                    {{formnote.errors}}
                 </form>
-          
         </div>
     </div>
 </div>

@@ -1,5 +1,4 @@
 from multiprocessing import context, dummy
-
 from unicodedata import name
 from urllib import request
 from django.shortcuts import render, redirect
@@ -24,6 +23,7 @@ from django.shortcuts import render, redirect
 from requisition.settings import EMAIL_HOST_USER
 from django.forms.models import model_to_dict
 from copy import copy
+from django.template import RequestContext
 
 
 
@@ -52,8 +52,6 @@ def registerpage(request):
             #             mail_subject, message, to=[to_email]  
             # )  
             # email.send() 
-
-
             try:
                 send_mail(mail_subject, message,  EMAIL_HOST_USER, [to_email])
                 print('success')
@@ -62,8 +60,6 @@ def registerpage(request):
             dummy = -1
             # return HttpResponse('Please confirm your email address to complete the registration')  
             return render(request, 'user/confirmation.html', { 'dummy' : dummy } )
-            
-            
         # else:  
         #     form = CreateUserForm()  
 
@@ -153,18 +149,6 @@ def update_profile(request):
         'form': form,
     }
     return render(request, "user/update_profile.html", context)
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -280,6 +264,7 @@ def requisitions(request, pk):
     requisition = Requisition.objects.get(id=pk)
     employee = request.user
     files = requisition.files.all()
+    notes = requisition.notes.all()
     pending_update = False
     
     # submitted_by = requisition.submitted_by
@@ -302,6 +287,7 @@ def requisitions(request, pk):
         'requisition':requisition,
         'employee' : employee,
         'files':files,
+        'notes':notes,
         'update':update,
         'pending_update' : pending_update,
         
@@ -319,21 +305,39 @@ def create_requisition(request, pk):
     employee = NewUser.objects.get(id=pk)
     form = RequisitionForm()
     formfile = MultiFileForm()
+    formnote = MultiNoteForm()
 
 
     if request.method == 'POST':
         form = RequisitionForm(request.POST)
         formfile = MultiFileForm(request.POST or None, request.FILES or None)
+        if 'note_hidden' in request.POST:
+            pass
+        if 'file_hidden' in request.POST:
+            pass
+        formnote = MultiNoteForm(request.POST)
+
         files = request.FILES.getlist('file')
 
  
-        if form.is_valid() and formfile.is_valid():
+        if form.is_valid() and formfile.is_valid() and formnote.is_valid():
+            
             r= form.save()
             r.submitted_by = employee
             r.send_to.add(employee)
             # # created by stamp
             r.status= 'Pending'
             r.save()
+            n = formnote.save(commit=False)
+
+            try:
+                MultiNote.objects.create(
+                    req = r,
+                    note = n,
+                    written = employee,
+                )
+            except:
+                print("invalid object couldnt be created")
 
             for f in files:
                 MultiFile.objects.create(
@@ -349,20 +353,13 @@ def create_requisition(request, pk):
             # # # created by stamp
             # r.status= 'Pending'
             # r.save()
-
-            
-            
             # email section 
             req_title = form.cleaned_data.get('title')
             mail_subject = 'A new requisition has been requested'  
             message = 'A new requisition has been requested\n' + 'under the name of ---' + req_title +'---'+ '\ncreated by  ' + employee.name
-
             r3 = r.send_to.values_list('email', flat=True)
-
             tomail = list(r3)
             tomail.remove(employee.email)
-            
-
             try:
                 send_mail(mail_subject, message,  EMAIL_HOST_USER, tomail)
                 print('success')
@@ -370,12 +367,13 @@ def create_requisition(request, pk):
                 return HttpResponse('Invalid header found.') 
             # end of email section
 
-            return redirect('requisitions', pk)
+            return redirect('requisitions', r.id)
 
             # return redirect('/')
     context = {
         'form':form,
-        'formfile':formfile 
+        'formfile':formfile,
+        'formnote':formnote,
     }        
 
     return render(request, 'user/new_requisition.html', context)
@@ -388,64 +386,56 @@ def create_requisition(request, pk):
 def update_requisition(request, pk):
     requisition= Requisition.objects.get(id=pk)
     formfile = MultiFileForm()
+    formnote = MultiNoteForm()
     form = UpdateForm(instance=requisition)
-    file_upload = False
-    formfile = MultiFileForm()
-    if request.method == 'POST':
-        formfile = MultiFileForm(request.POST or None, request.FILES or None)
-        files = request.FILES.getlist('file')
 
-        if formfile.is_valid():
-            for f in files:
-                MultiFile.objects.create(
+    if request.method == 'POST':
+        if 'file_hidden' in request.POST:
+            formfile = MultiFileForm(request.POST or None, request.FILES or None)
+            files = request.FILES.getlist('file')
+
+            if formfile.is_valid():
+                for f in files:
+                    MultiFile.objects.create(
+                                req = requisition,
+                                file = f,
+                            )
+
+    
+        if 'note_hidden' in request.POST:
+            formnote = MultiNoteForm(request.POST or None)
+            if formnote.is_valid():
+                n = formnote.save(commit=False)
+
+                try:
+                    MultiNote.objects.create(
                             req = requisition,
-                            file = f,
-                        )
+                            note = n,
+                            written = request.user.newuser,
+                    )
+                except:
+                    print("invalid object couldnt be created")
+        
 
-    if request.method == 'POST':
+    
         form = UpdateForm(request.POST or None, instance=requisition) 
-        form.has_changed()
-
-        if file_upload:
-            formfile = MultiFileForm()
-            if request.method == 'POST':
-                formfile = MultiFileForm(request.POST or None, request.FILES or None)
-                files = request.FILES.getlist('file')
-
-                if formfile.is_valid():
-                    for f in files:
-                        MultiFile.objects.create(
-                            req = requisition,
-                            file = f,
-                        )
-
         if form.is_valid():
             r = form.save()
 
-            
-
            # email section->
-            
             req_title = requisition.title
             employee = request.user.newuser
-           
             mail_subject = 'A requisition has been Updated'  
             print(request.user.first_name)
             message = 'A new requisition has been updated\n' + 'under the name of ---' + req_title +'---'+ '\n by  ' + employee.name
-
-            
             r3 = requisition.send_to.values_list('email', flat=True)
-
             tomail = list(r3)
             tomail.remove(request.user.email)
-            
-
             try:
                 send_mail(mail_subject, message,  EMAIL_HOST_USER, tomail)
                 print('success')
             except BadHeaderError:
                 return HttpResponse('Invalid header found.') 
-            
             return redirect('requisitions', pk)
         else:
             print('not valid')
@@ -454,6 +444,8 @@ def update_requisition(request, pk):
         'form':form,
         'requisition':requisition,
         'formfile':formfile,
+        'formnote':formnote,
+
     }
     return render(request, 'user/update_requisition.html', context)
 
@@ -463,19 +455,44 @@ def update_requisition(request, pk):
 @allowed_users(allowed_roles=['employee'])
 def update_pending_requisition(request, pk):
     requisition= Requisition.objects.get(id=pk)
+    # file = MultiFile.objects.filter(req = requisition)
+    # formfile = MultiFileForm(instance=file)
     formfile = MultiFileForm()
+    formnote = MultiNoteForm()
     form = RequisitionForm(instance=requisition)
     employee = request.user.newuser
-    
-
 
     if request.method == 'POST':
-        form = RequisitionForm(request.POST, instance=requisition)
-        formfile = MultiFileForm(request.POST or None, request.FILES or None)
-        files = request.FILES.getlist('file')
+        if 'file_hidden' in request.POST:
+            formfile = MultiFileForm(request.POST or None, request.FILES or None)
+            files = request.FILES.getlist('file')
 
+            if formfile.is_valid():
+                for f in files:
+                    MultiFile.objects.create(
+                                req = requisition,
+                                file = f,
+                            )
+
+    
+        if 'note_hidden' in request.POST:
+            formnote = MultiNoteForm(request.POST or None)
+            if formnote.is_valid():
+                n = formnote.save(commit=False)
+
+                try:
+                    MultiNote.objects.create(
+                            req = requisition,
+                            note = n,
+                            written = request.user.newuser,
+                    )
+                except:
+                    print("invalid object couldnt be created")
+        form = RequisitionForm(request.POST, instance=requisition)
+        
+#  and formfile.is_valid() and formnote.is_valid()
  
-        if form.is_valid() and formfile.is_valid():
+        if form.is_valid():
             r= form.save()
             r.submitted_by = employee
             r.send_to.add(employee)
@@ -483,11 +500,23 @@ def update_pending_requisition(request, pk):
             r.status= 'Pending'
             r.save()
 
-            for f in files:
-                MultiFile.objects.create(
-                    req = r,
-                    file = f,
-                )
+
+        
+            
+            # for f in files:
+            #     MultiFile.objects.create(
+            #             req = r,
+            #             file = f,
+            #         )
+           
+
+
+            # n = formnote.save(commit=False)
+            # MultiNote.objects.create(
+            #         req = requisition,
+            #         note = n,
+            #         written = employee,
+            #     )
 
     
 
@@ -502,6 +531,8 @@ def update_pending_requisition(request, pk):
         'form':form,
         'requisition':requisition,
         'formfile':formfile,
+        'formnote':formnote,
+
     }
     return render(request, 'user/update_pending_requisition.html', context)
 

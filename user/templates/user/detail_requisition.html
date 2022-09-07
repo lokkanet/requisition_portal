@@ -64,6 +64,17 @@
 
           </table>
           
+          {% if notes %}
+          {%for n in notes%}
+        <div class="px-2 py-1">
+          <div class="card p-1">
+            <p class="text-muted">on {{n.date}}&nbsp;{{n.written}} wrote: </p>
+            {{n.note}}
+          </div>
+        </div>
+        {%endfor%}
+          {%endif%}
+
 
         </div>
         <br>
@@ -81,7 +92,7 @@
           <div>
             {% if pending_update %}
             <a href="{% url 'update_pending_requisition' requisition.id %}" class="btn btn-primary">UPDATE Requisition</a>
-            <!-- <a href="{% url 'delete_requisition' requisition.id %}" class="btn btn-secondary">DELETE</a> -->
+            <a href="{% url 'delete_requisition' requisition.id %}" class="btn btn-secondary">DELETE</a>
             {% endif %}
 
             {% if update %}

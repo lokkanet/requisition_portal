@@ -21,52 +21,54 @@
         <div class="card p-3">
             <div class="d-flex justify-content-around">
                 <div class="col-6 p-5">
-            
+
+
+
+                    <h6>Title</h6>
+                    <h4>{{requisition.title}}</h4>
+                    <hr>
+                    <br>
+                    <table class="table-info table">
+
+                        <tr>
+                            <td colspan="2">Date created on</td>
+                            <th scope="row">{{requisition.date}}</th>
+
+                        </tr>
+                        <tr>
+                            <td colspan="2">Submitted By</td>
+                            <th scope="row">{{requisition.submitted_by}}</th>
+
+                        </tr>
+
+                    </table>
 
                     <form action="" method="POST" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <h6>Title</h6>
-                        <h4>{{requisition.title}}</h4>
-                        <hr>
-                        <br>
-                        <table class="table-info table">
-
-                            <tr>
-                                <td colspan="2">Date created on</td>
-                                <th scope="row">{{requisition.date}}</th>
-                  
-                              </tr>
-                            <tr>
-                              <td colspan="2">Submitted By</td>
-                              <th scope="row">{{requisition.submitted_by}}</th>
-                
-                            </tr>
-                            
-                            
-                            
-                
-                          </table>
-                          
-                       
+                    {% csrf_token %}
                         {{form.date_of_delivery|as_crispy_field}}
                         {{ form.status|as_crispy_field }}
-            
-            
-            
                         <br>
                         <button class="btn btn-primary" type="submit">Submit</button>
+
                         <div class="py-3 text-warning">
                             {{form.errors}}
                             {{formfile.errors}}
                         </div>
+
                     </form>
-            
                 </div>
-            
+
                 <div class="col-6 p-3">
                     <form action="" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
+                        {{formfile.file_hidden}}
                         <p>{{formfile.file|as_crispy_field}}</p>
+                        <button class="btn btn-primary" type="submit">Upload</button>
+                    </form>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        {{formnote.note_hidden}}
+                        <p>{{formnote.note|as_crispy_field}}</p>
                         <button class="btn btn-primary" type="submit">Upload</button>
                     </form>
                 </div>
