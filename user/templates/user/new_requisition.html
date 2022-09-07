@@ -27,6 +27,8 @@
                 <form action="" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="px-5">{{ form.title|as_crispy_field }}</div>
+                    {{form.req_hidden}}
+
                     <div class="d-flex justify-content-around">
                         <div class="col-4 p-3">
                             {{formnote.note_hidden}}

@@ -13,6 +13,8 @@ from .widget import DatePickerInput
 from django.forms import ModelForm, Select
 
 class RequisitionForm(ModelForm):
+    req_hidden = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
     class Meta:
         model = Requisition
         fields = '__all__'
@@ -56,6 +58,8 @@ class MultiNoteForm(ModelForm):
 
 
 class UpdateForm(ModelForm):
+    update_hidden = forms.BooleanField(widget=forms.HiddenInput, initial=True)
+
     class Meta:
         model = Requisition
         fields = ['date_of_delivery', 'status']
