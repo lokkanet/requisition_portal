@@ -20,7 +20,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail, BadHeaderError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
-from requisition.settings import EMAIL_HOST_USER
+from requisition.settings.base import EMAIL_HOST_USER
 from django.forms.models import model_to_dict
 from copy import copy
 from django.template import RequestContext

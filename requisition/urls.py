@@ -18,6 +18,7 @@ from django.urls import path, include
 from user import views
 from django.conf.urls.static import static
 from django.conf import settings
+import os
 
 urlpatterns = [
     path('register/', views.registerpage, name='registerpage'),
@@ -38,7 +39,8 @@ urlpatterns = [
 
 
 
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
+    path(os.getenv('SECRET_ADMIN_URL') + '/admin/', admin.site.urls),
 
 
     # path('', views.home, name='home'),
